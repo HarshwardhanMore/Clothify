@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% for i in products %}
+
+    <div>
+      <img src="../media/productImages/{{i.imageName}}" alt="" />
+      <h2>{{i}}</h2>
+      <div>{{i.name}}</div>
+      <div>{{i.color}}</div>
+      <div>{{i.price}}</div>
+      <div class="quantity">
+        <button onclick="increaseQuantity('{{i.name}}')">+</button>
+        <div id="price_{{i.name}}">0</div>
+        <button onclick="decreaseQuantity('{{i.name}}')">-</button>
+      </div>
+    </div>
+
+    {% endfor %}
+    <div>
+      <div>Elements in cart :</div>
+      <div id="totalCartCount"></div>
+    </div>
+    <!-- <script src="{% static 'scripts/shop.js' %}"></script> -->
+    <script>
+      var cart = {};
+      function setCartSize() {
+        var count = Object.keys(cart).length;
+        if (count > 0) {
+          document.getElementById("totalCartCount").innerHTML = count;
+        }
+      }
+      function increaseQuantity(i) {
+        // console.log(document.getElementById("price_" + i).innerHTML);
+        document.getElementById("price_" + i).innerHTML =
+          document.getElementById("price_" + i).innerHTML - "0" + 1;
+        if (cart.hasOwnProperty("price_" + i)) {
+          cart["price_" + i] = cart["price_" + i] + 1;
+        } else {
+          cart["price_" + i] = 0;
+        }
+        console.log("Cart : ");
+        for (var i in cart) {
+          console.log(i);
+          console.log(cart[i]);
+        }
+        setCartSize();
+      }
+      function decreaseQuantity(i) {
+        if (document.getElementById("price_" + i).innerHTML - "0" == 0) {
+          document.getElementById("price_" + i).innerHTML = 0;
+        } else {
+          document.getElementById("price_" + i).innerHTML =
+            document.getElementById("price_" + i).innerHTML - "0" - 1;
+        }
+        console.log(document.getElementById("price_" + i).innerHTML);
+        setCartSize();
+      }
+    </script>
+  </body>
+</html>
